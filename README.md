@@ -1,4 +1,5 @@
-_At present, the method of video super-resolution based on deep learning takes a large number of LR videos and HR videos as inputs for neural networks, performs frame alignment, feature extraction/fusion training, and then outputs a sequence of HR video frames through the network. The video super-resolution process mainly includes an alignment module, a feature extraction and fusion module, and a reconstruction module._
+_At present, the method of video super-resolution based on deep learning takes a large number of LR videos and HR videos as inputs for neural networks, performs frame alignment, feature extraction/fusion training, and then outputs a sequence of HR video frames through the network. The video super-resolution process mainly includes an alignment module, a feature extraction and fusion module, and a reconstruction module._  
+_* Datasets are not provided in this repo_
 
 # Main Modules
 **Alignment module:** Extract motion information to align adjacent frames with the target frame through distortion or offset.  

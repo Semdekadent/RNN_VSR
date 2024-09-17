@@ -12,3 +12,19 @@ _At present, the method of video super-resolution based on deep learning takes a
 3. Input Tensor to Neural Network: The Tensor is used as input for the neural network. Load the model and process the input data. The output of the final layer is the super-resolved image of the frame sequence, and the super-resolved result is saved as an image.
 4. Move the Window: Train the next high-resolution (HR) image.
 5. Combine Frames into a Video: After all frame sequences are trained, merge all images into a video.
+
+# Alignment
+![image](https://github.com/user-attachments/assets/7fa3ee16-62ff-45e8-a41e-8ea98a0bd4fa)  
+The alignment module aligns the features of adjacent frames with the features of the current frame, calculates the offset using convolution, and performs feature alignment using deformable convolution.  
+Using a three-level pyramid (FPN) structure, align the features layer by layer from bottom to top, and upsample the lower offset and features to the L-1 layer for convolution, The offset and feature map of the lower layer will make the calculation of the upper layer more accurate. Finally, the current frame and aligned features will be subjected to deformable convolution to obtain the final feature.
+
+# Feature Extraction
+![image](https://github.com/user-attachments/assets/cc6da61d-7496-4a89-826d-56fa410ec14b)  
+To extract features, the image is first convolved using five residual blocks. Each residual block is formed by concatenating convolutional layers - ReLU - convolutional layers, and finally adding the result to the input.  
+In order to perform alignment operations, two convolutional layers are used for downsampling to extract features from Level 1, Level 2, and Level 3, respectively.  
+_* The reconstruction module consists of 10 residual blocks that are consistent with the feature extraction module. After upsampling convolution and LeakyReLU activation function, the final super-resolution image is obtained._
+
+# Feature Fusion
+![image](https://github.com/user-attachments/assets/79ab535e-881b-45cf-aaba-e537fe0a2687)  
+For aligned feature maps, the reference frame and adjacent frames are subjected to different convolutional layers to extract features, and the similarity between adjacent frames and the reference frame is calculated to obtain a temporal weight map. Multiplying the aligned feature maps in the spatial dimension is equivalent to adjusting the weights of feature maps at different times.  
+Next, all feature maps are convolved for feature fusion, and then feature maps are obtained at different scales through a pyramid structure. After upsampling, the final weighted fused feature map is obtained.
